@@ -1,36 +1,26 @@
 <?php
 include('includes/config.php');
 
-
-if (!isset($_SESSION['user_id'])) {
-  header("Location: index.php");
-  exit();
-}
-
-$filter = isset($_GET['filter']) ? $_GET['filter'] : '';
-
 // Check if a status query parameter is set
+$status = isset($_GET['status']) ? $_GET['status'] : '';
 
-$sql = "SELECT * FROM members WHERE 1";  // Initialize the base SQL query
+$selectQuery = "SELECT * FROM members";
 
 // Filter based on status
-if ($filter == 'expired') {
-  // Query for expired memberships
-  $sql .= " AND expiry_date IS NOT NULL AND expiry_date < CURDATE()";
-} elseif ($filter == 'expiring-soon') {
-  // Query for memberships expiring within the next 7 days
-  $sql .= " AND expiry_date BETWEEN CURDATE() AND CURDATE() + INTERVAL 7 DAY";
-} elseif ($filter == 'new-members') {
-  // Query for new members who joined within the last 24 hours
-  $sql .= " AND created_at >= NOW() - INTERVAL 1 DAY";
+if ($status === 'expired') {
+    // Expired memberships: expiry date is before the current date
+    $selectQuery .= " WHERE expiry_date IS NULL OR expiry_date < CURDATE()";
+} elseif ($status === 'expiring_soon') {
+    // Expiring soon: expiry date within the next 7 days
+    $selectQuery .= " WHERE expiry_date BETWEEN CURDATE() AND CURDATE() + INTERVAL 7 DAY";
 }
 
-$result = $conn->query($sql);
+$result = $conn->query($selectQuery);
 
-if (!$result) {
-  echo "Error: " . $conn->error;
+if (!isset($_SESSION['user_id'])) {
+    header("Location: index.php");
+    exit();
 }
-
 ?>
 
 <!-- The rest of your file to display the filtered list of members remains unchanged -->
