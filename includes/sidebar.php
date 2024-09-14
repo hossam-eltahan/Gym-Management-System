@@ -18,7 +18,7 @@
           $systemNameRow = $systemNameResult->fetch_assoc();
           return $systemNameRow['system_name'];
       } else {
-          return 'Codezilla';
+          return 'Gym System';
       }
   }
 

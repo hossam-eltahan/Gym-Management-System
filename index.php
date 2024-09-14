@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href=""><b>EL-H Membership Management</b> System</a>
+    <a href=""><b> Gym Management</b> System</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
